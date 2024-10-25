@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dispatches from the frustrated frontline</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>dispatches from the frustrated frontline</h2>
+        <textarea id="textInput" placeholder="Type your message here..."></textarea>
+        <button onclick="submitEntry()">Submit</button>
+        <div class="display-container" id="displayContainer"></div>
+    </div>
+
+    <script>
+        // Function to save the entry and update display
+        function submitEntry() {
+            const inputText = document.getElementById("textInput").value;
+            if (inputText) {
+                let entries = JSON.parse(localStorage.getItem("entries")) || [];
+                entries.push(inputText);
+                localStorage.setItem("entries", JSON.stringify(entries));
+                document.getElementById("textInput").value = ''; // Clear input box
+                displayEntries(); // Update displayed entries
+            }
+        }
+
+        // Function to display all entries
+        function displayEntries() {
+            const entries = JSON.parse(localStorage.getItem("entries")) || [];
+            const container = document.getElementById("displayContainer");
+            container.innerHTML = ''; // Clear existing entries
+            entries.forEach(entry => {
+                const bubble = document.createElement("div");
+                bubble.classList.add("speech-bubble");
+                bubble.style.left = `${Math.random() * 80}%`;
+                bubble.style.top = `${Math.random() * 80}%`;
+                bubble.innerText = entry;
+                container.appendChild(bubble);
+            });
+        }
+
+        // Display entries on page load
+        window.onload = displayEntries;
+    </script>
+</body>
+</html>
